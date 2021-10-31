@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './App.css';
+import { addTodo } from  './actions/todos';
 
 class App extends Component {
 
@@ -17,7 +18,7 @@ class App extends Component {
   handleOnSubmit = event => {
     event.preventDefault();
     console.log("Todo being added: ", this.state.todo);
-    this.props.dispatch({ type: 'ADD_TODO', todo: this.state.todo });
+    this.props.addTodo(this.state.todo);
     this.setState({ todo: '' });
   }
 
@@ -47,4 +48,17 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(App);
+// This new function takes in dispatch as an argument
+// It then returns an object that contains a function as a value!
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addTodo: (todo) => {
+      dispatch(addTodo(todo))
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+// alternate refactored syntax
+//export default connect(mapStateToProps, { addTodo })(App);
